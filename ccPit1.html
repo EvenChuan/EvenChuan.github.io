@@ -1,37 +1,165 @@
-    <h2 class="t_nav"><a>HTML/CSS</a><a>加载</a></h2>
-    <h1 class="c_titile">针对IE9 的兼容问题</h1>
-    <p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
-    <div class="hc_main" style="padding: 2rem; font-size: 1rem">
-        &nbsp;&nbsp;开门见山
-        <br>
-        <br>
-        <br>
-        无线滚动技术简单向下就可以加载，多用于移动端，
-        <br>
-        <br>
-        优点：&nbsp;&nbsp;①发现界必备，实时更新必用，不需要等待页面预加载，增加停留时间 <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;②页面过于冗长时，体验性更好 <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;③适用于移动设备，滚动事件比点击事件好的多 <br>
-        <br>
-        缺点：&nbsp;&nbsp;①加载内容多了页面性能会下降，有大量图片时会出现卡顿效果 <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;②不能准确回到想要的位置 <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;③滚动条不准确不能到底<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;④没有页脚，联系方式等一些位置<br>
-        <br>
-        <br>
-        分页技术点击加载，多用于pc端，
-        <br>
-        <br>
-        优点：&nbsp;&nbsp;①当用户需要找到一些预找信息时用，无需浏览整个信息内容 <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;②可以给用户大概的位置（适用电商）<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;③可以了解大约多少数据量 <br>
-        <br>
-        缺点：&nbsp;&nbsp;①有多余的操作，需要点击事件 <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;②需等待页面加载然后呈现 <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;③一次获取信息条目少<br>
-        <br>
-        <br>
-        <br>
-        <br>
-        &nbsp;&nbsp;总结：一句话具体情况具体分析，用户体验第一位！
-    </div>
+<h2 class="t_nav"><a>HTML/CSS</a><a>兼容IE9，IE10</a></h2>
+<h1 class="c_titile">针对IE9、IE10 的兼容问题</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    &nbsp;&nbsp;作为前端最讨厌的IE存在的兼容问题
+    <table class="ccpit1table">
+        <thead>
+        <tr>
+            <td>兼容问题描述</td>
+            <td>存在版本</td>
+            <td>解决方案</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>兼容问题描述</td>
+            <td>存在版本</td>
+            <td>解决方案</td>
+        </tr>
+        <tr>
+            <td>img存在默认的外边框</td>
+            <td>IE9</td>
+            <td>border:none</td>
+        </tr>
+        <tr>
+            <td>location.origin方法不识别</td>
+            <td>IE9</td>
+            <td>为IE9重新加入location.origin方法</td>
+        </tr>
+        <tr>
+            <td>图片的绘制上传失效，不支持Canvas</td>
+            <td>IE9</td>
+            <td>更换其他方法现将图片传入后台，再返回显示</td>
+        </tr>
+        <tr>
+            <td>dataset方法失效</td>
+            <td>IE9 IE10</td>
+            <td>添加公共方法对元素data-XX属性进行遍历，生成dataset属性</td>
+        </tr>
+        <tr>
+            <td>所有的a标签点击时有默认虚线边框</td>
+            <td>IE9</td>
+            <td>a:focus{outline:none;}</td>
+        </tr>
+        <tr>
+            <td>所有的a标签点击的时候都有个默认的白色背景</td>
+            <td>IE10</td>
+            <td>a:active{background:transparent!important}</td>
+        </tr>
+        <tr>
+            <td>遇到console代码执行不下去</td>
+            <td>IE9</td>
+            <td>打开F2或者将console注释</td>
+        </tr>
+        <tr>
+            <td>text-shadow属性不支持</td>
+            <td>IE9</td>
+            <td>
+                -webkit-transform:translate(2px, 20px); <br>
+                -moz-text-shadow:0 0 10px #C06; <br>
+                -webkit-text-shadow:0 0 10px #c06; <br>
+                text-shadow:0 0 10px #c06; <br>
+                filter: Shadow(Color='green', Direction='135', Strength='6')/*Direction阴影的方向*/ <br>
+                filter: dropshadow(OffX=2, OffY=2, Color='black', Positive='true'); <br>
+            </td>
+        </tr>
+        <tr>
+            <td>border-image属性不支持</td>
+            <td>IE9</td>
+            <td>一般很少用</td>
+        </tr>
+        <tr>
+            <td>multiple columns不支持</td>
+            <td>IE9</td>
+            <td>不用</td>
+        </tr>
+        <tr>
+            <td>text-stroke不支持</td>
+            <td>IE+</td>
+            <td>使用filter写出一样的效果</td>
+        </tr>
+        <tr>
+            <td>C3动画，渐变</td>
+            <td>IE9</td>
+            <td>不支持</td>
+        </tr>
+        <tr>
+            <td>resize不支持</td>
+            <td>IE9 IE10</td>
+            <td>通过获取宽和高来修改</td>
+        </tr>
+        <tr>
+            <td>支持的伪类和伪元素</td>
+            <td>IE9</td>
+            <td>
+                :root <br>
+                :nth-child(n) <br>
+                :nth-last-child(n) <br>
+                :nth-of-type(n) <br>
+                :nth-last-of-type(n) <br>
+                :last-child <br>
+                :first-of-type <br>
+                :last-of-type <br>
+                :only-child <br>
+                :only-of-type <br>
+                :empty <br>
+                :target <br>
+                :not(s) <br>
+                :enabled <br>
+                :disabled <bIE9>
+                :checked 不用<br
+                :indeterminate <br>
+                ::selection <br>
+            </td>
+        </tr>
+        <tr>
+            <td>不支持的伪类和伪元素</td>
+            <td>IE9</td>
+            <td>
+                :default <br>
+                :valid <br>
+                :invalid <br>
+                :in-range <br>
+                :out-of-range <br>
+                :required <br>
+                :optional <br>
+                :read-only <br>
+                :read-write <br>
+                ::before <br>
+                ::after <br>
+                ::first-letter <br>
+                ::first-line <br>
+                ::value <br>
+                ::choices <br>
+                ::repeat-item <br>
+                ::repeat-index <br>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p>在次留下个连接，此链接大的方向概括的IE对新特性的解决方案，<a href="http://www.cnblogs.com/zamhown/p/6709932.html">惦记我跳转</a></p>
+
+</div>
+<style>
+
+    .ccpit1table{
+        margin-top: 2rem;
+        text-align: center;
+        width:100%;
+        border-collapse: collapse;
+    }
+    .ccpit1table thead{
+        background-color: #89919a;
+        color:#fff;
+        margin: 2rem 0;
+    }
+    .ccpit1table tr{
+        width: 100%;
+        height: 2.5rem;
+    }
+    .ccpit1table td{
+        border:1px solid #ccc;
+    }
+</style>
+
