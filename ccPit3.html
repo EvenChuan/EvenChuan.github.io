@@ -1,0 +1,25 @@
+<h2 class="t_nav"><a>踩过的</a><a>卡顿</a></h2>
+<h1 class="c_titile">苹果手机滑动卡顿问题</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    <div class="ccPig2main">
+        &nbsp;&nbsp;做微信开发项目时，页面在苹果手机上滑动卡顿，感觉阻尼很大，只要手指一离开手机滑动也立即停止，查了好久也找不到原因，该页面用了绝对定位，并且超过页面高度，
+        我以为是这个原因就尝试改掉定位方式，未果后有尝试改变高度，还是不行,后来就在网上查了好多解决方案逐一测试... <br><br><br>
+        &nbsp;&nbsp;最终一行css代码解决：<b style="color:orangered">-webkit-overflow-scrolling : touch;</b><br><br>
+        &nbsp;&nbsp;支持范围：所以iOS Safari应该是需要5.0。Android只在4.0以上。<br>
+        &nbsp;&nbsp;从前端开发的角度讲，只需要知道CSS的属性-webkit-overflow-scrolling是真的创建了带有硬件加速的系统级控件，所以效率很高。但是这相对是耗更多内存的，最好在产生了非常大面积的overflow时才应用。
+        那么问题来了，消耗内存和高效之间选择谁呢？我毫不犹豫的选择了后者，因为他可以解决问题，然后，然后我就下班了^V^!
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+</div>
+<style>
+</style>
+<script>
+</script>
+
