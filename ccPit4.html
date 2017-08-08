@@ -1,0 +1,43 @@
+<h2 class="t_nav"><a>踩过的</a><a>mouseover/mouseout</a></h2>
+<h1 class="c_titile">mouseover/mouseout引起的冒泡带来的不便</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    <div class="ccPig4main">
+        &nbsp;&nbsp;做过电商网站的应该做过过这样的一个效果：左侧列表，当鼠标悬浮在左侧列表时，展开二级或者三级列表，要求鼠标悬浮在左侧列表，或者悬浮在子元素时该条目变背景色；当鼠标移出时，左侧列表背景色恢复同时二级或三级列表隐藏；
+        &nbsp;&nbsp;这个需求常见，做法也有许多，jq事件首先想起的是<b>mouseover()</b><b>mouseout()</b>想法本身没错，但是做项目发现当我子元素设置乱七八糟的 <b>margen</b>和 <b>padding</b>同时绑定这两个事件时由于冒泡的原因总是会出错
+        然年阻止默认事件，发现逻辑又有偏差（具体的想不起来啦，在此不想浪费过多时间），其实这个也好调试，但是最让我头疼的是火狐的不兼容问题，导致总是控制出问题！ <br>
+        <div style="background-color: #ddd">
+            &nbsp;&nbsp;时间宝贵，我果断选择换一个思路，但是脑子里浮现出了两种做法：<br>
+            &nbsp;&nbsp;①既然冒泡导致问题出现，我干脆就脱离这种层级结构，用定位方式，当悬浮列表时显示对应的定位元素；（可行，不过页面注入我都写好了当然不愿意重新改变布局方式；）<br>
+            &nbsp;&nbsp;②用less控制，避免 <b>mouseover()/mouseout()</b>造成不必要的麻烦，亲自试了试可行，思路很简单：<b>父元素:hover的时候，子元素display：block；</b>解决。<br>
+            &nbsp;&nbsp;③mouseenter()/mouseleave()，只怪当时学艺不精，jq现成的方法我竟然没用过，这里比较一下：
+            <p style="color:darkred">
+                &nbsp;mouseover与mouseenter <br>
+                &nbsp;&nbsp;不论鼠标指针穿过被选元素或其子元素，都会触发 mouseover 事件。<br>
+                &nbsp;&nbsp;只有在鼠标指针穿过被选元素时，才会触发 mouseenter 事件。<br>
+                &nbsp;mouseout与mouseleave<br>
+                &nbsp;&nbsp;不论鼠标指针离开被选元素还是任何子元素，都会触发 mouseout 事件。<br>
+                &nbsp;&nbsp;只有在鼠标指针离开被选元素时，才会触发 mouseleave 事件。<br>
+            </p>
+        </div>
+        <p>
+            <br>
+            <br>
+            &nbsp;&nbsp;曾经有一个非常容易的方法摆在我面前我没有珍惜，知道失去她才后悔莫及，如果上天再给我一次做电商网站的机会......等等，还真给啦...哎呀！还是面向澳洲的百货类，除了一个login我怎么都不认识，谁有好的翻译软件，在线等挺急的。。。
+        </p>
+
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+</div>
+<style>
+</style>
+<script>
+</script>
+
