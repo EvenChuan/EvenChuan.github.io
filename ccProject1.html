@@ -1,0 +1,382 @@
+<style>
+    .cameraInput {
+        cursor: pointer;
+        width: 18%;
+        min-width: 276px;
+        min-height: 158px;
+        opacity: 0;
+        position: absolute;
+        z-index: 1;
+        left: 26.4%;
+    }
+
+    .div1 {
+        width: 25%;
+        height: 20%;
+        min-width: 280px;
+        min-height: 160px;
+        border: 1px solid #aaa;
+        text-align: left;
+        position: relative;
+        margin-top: 1rem;
+        left: 20%;
+        background: #ccc url("images/Add pictures.png") no-repeat 50% 50%;
+        background-size: 20%;
+    }
+
+    .div1 .myCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .btnsend{
+        width: 6rem;
+        height: 3rem;
+        margin:  2rem 3rem 0 27rem;
+    }
+    a.load:hover{color:blue}
+</style>
+
+<h2 class="t_nav"><a>Project</a><a>canvas绘制加上传</a></h2>
+<h1 class="c_titile">图片的canvas绘制 + 上传 插件</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    <p>
+        &nbsp;&nbsp;做项目中用到的图片上传框架，当时我找了个最简单的单图上传的框架，根据我们项目的需求，我将这个框架调整大概精简了一般多的代码，并修改成可以多图上传的框架，有项目用到此需求的框架尽管点击下方下载按钮进行下载，我以最简明的方式为你呈现，html+css+js共300多行代码！下面看演示案例：
+    </p>
+    <input type="file" capture="camera" accept="" name="cameraInput" class="sign_file cameraInput"/>
+    <div class="div1">
+        <canvas class="myCanvas"></canvas>
+    </div>
+    <input type="file" capture="camera" accept="" name="cameraInput" class="sign_file cameraInput"/>
+    <div class="div1">
+        <canvas class="myCanvas"></canvas>
+    </div>
+    <input type="file" capture="camera" accept="" name="cameraInput" class="sign_file cameraInput"/>
+    <div class="div1">
+        <canvas class="myCanvas"></canvas>
+    </div>
+    <button class="btnsend">提 交</button>
+    <a class="load" href="compress/pictureupload.rar" download="">下载</a>
+</div>
+<script>
+    function sendImage() {
+        /*获取 canvas DOM 对象
+         获取Base64编码后的图像数据，格式是字符串
+         "data:image/png;base64,"开头,需要在客户端或者服务器端将其去掉，后面的部分可以直接写入文件*/
+        var Canvas = $(".myCanvas");
+        var arrData = [];
+        $.each(Canvas, function (i) {
+            arrData["dataurl" + i] = Canvas[i].toDataURL("image/png");
+        });
+        var
+            state = 1,
+                /* 空图片的转码，每个浏览器不一致，下面四个正则分别匹配：火狐、IE、苹果、谷歌 */
+            regF = new RegExp("iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAAxUlEQVR4nO3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAAA"),
+            regIE = new RegExp("iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADGSURBVHhe7cExAQAAAMKg9U9tCF8gAAAAA"),
+            regSa = new RegExp("iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAEZ0lEQVR4Ae3UgQkAIAwDQXX"),
+            reg = new RegExp("AgYyAwcpUJSgBAgbLDxAgkBEwWJmqBCVAwGD5AQIEMgIGK1OVoAQIGCw/QIBARsBgZaoSlACBB1YxAJfjJb2jAAAAAElFTkSuQmCC");
+            obj_text = {//此处为发送的数据，0/1/2/3依次累加，如果加图片，嘘往上加！
+                "First": arrData["dataurl0"],
+                "Second": arrData["dataurl1"],
+                "Third": arrData["dataurl2"]
+            };
+        for (var k in obj_text) {
+            if (reg.test(obj_text[k])|| regF.test(obj_text[k]) || regIE.test(obj_text[k]) || regSa.test(obj_text[k])) {//当检测图片为空的时候state致0，数据不发送！
+                state = 0;
+                alert("请全部上传！");
+                break;
+            }
+        }
+        if (state === 1) {
+            var obj = obj_text;
+            $(".btnsend").html("上传中...").unbind();
+//                ajax("post", location.origin + "/UserList/designer_qualification", obj, callback0);ajax接口位置
+            alert("打开控制台查看发送给后台的数据！");
+            console.log(obj);
+        }
+
+        //回调函数位置
+        function callback0(data) {
+            if (data) {
+                ajax("post", location.origin + "/Sms.class.php", {
+                    Tel: data,
+                    templateCode: "SMS_55235001"
+                });
+                $(".btnsend_designer_qualification", "#designer_qualification").html("上 传").bind("click", function () {
+                    sendImage()
+                });
+                $.cookie("B_cer_href", "1", {expires: 10000, "path": "/"});
+                $(".Phy_ing").show();
+                $(".counter,.Phy_down").hide();
+                scrollTo(0, 0);
+                webAlert("上传成功！", 1);
+            } else {
+                webAlert("上传失败！", 1);
+            }
+        }
+    }
+    $(".btnsend").click(function () {// 提交图片的base64码！
+        sendImage();
+    });
+    /*  绘制图片的change事件 ↓   */
+    var cameraInput = $('.cameraInput');
+    for (var i = 0; i < cameraInput.length; i++) {
+        cameraInput[i].onchange = function () {
+            var file = this.files[0],
+                mpImg = new MegaPixImage(file),
+                resCanvas1 = $(this).next("div.div1").find("canvas")[0],
+                _max = 320;
+            mpImg.render(resCanvas1, {maxHeight: _max});
+        };
+    }
+    /*  绘制图片的change事件 ↑   */
+
+    /* 如果你项目中多个页面用到图片上传的方法可将这部分提取出来  ↓ */
+    (function () {
+        function detectSubsampling(img) {
+            var iw = img.naturalWidth, ih = img.naturalHeight;
+            if (iw * ih > 1024 * 1024) { // subsampling may happen over megapixel image
+                var canvas = document.createElement('canvas');
+                canvas.width = canvas.height = 1;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, -iw + 1, 0);
+                // subsampled image becomes half smaller in rendering size.
+                // check alpha channel value to confirm image is covering edge pixel or not.
+                // if alpha value is 0 image is not covering, hence subsampled.
+                return ctx.getImageData(0, 0, 1, 1).data[3] === 0;
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * Detecting vertical squash in loaded image.
+         * Fixes a bug which squash image vertically while drawing into canvas for some images.
+         */
+        function detectVerticalSquash(img, iw, ih) {
+            var canvas = document.createElement('canvas');
+            canvas.width = 1;
+            canvas.height = ih;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            var data = ctx.getImageData(0, 0, 1, ih).data;
+            // search image edge pixel position in case it is squashed vertically.
+            var sy = 0;
+            var ey = ih;
+            var py = ih;
+            while (py > sy) {
+                var alpha = data[(py - 1) * 4 + 3];
+                if (alpha === 0) {
+                    ey = py;
+                } else {
+                    sy = py;
+                }
+                py = (ey + sy) >> 1;
+            }
+            var ratio = (py / ih);
+            return (ratio === 0) ? 1 : ratio;
+        }
+
+        /**
+         * Rendering image element (with resizing) and get its data URL
+         */
+        function renderImageToDataURL(img, options, doSquash) {
+            var canvas = document.createElement('canvas');
+            renderImageToCanvas(img, canvas, options, doSquash);
+            return canvas.toDataURL("image/jpeg", options.quality || 0.8);
+        }
+
+        /**
+         * Rendering image element (with resizing) into the canvas element
+         */
+        function renderImageToCanvas(img, canvas, options, doSquash) {
+            var iw = img.naturalWidth, ih = img.naturalHeight;
+            var width = options.width, height = options.height;
+            var ctx = canvas.getContext('2d');
+            ctx.save();
+            transformCoordinate(canvas, ctx, width, height, options.orientation);
+            var subsampled = detectSubsampling(img);
+            if (subsampled) {
+                iw /= 2;
+                ih /= 2;
+            }
+            var d = 1024; // size of tiling canvas
+            var tmpCanvas = document.createElement('canvas');
+            tmpCanvas.width = tmpCanvas.height = d;
+            var tmpCtx = tmpCanvas.getContext('2d');
+            var vertSquashRatio = doSquash ? detectVerticalSquash(img, iw, ih) : 1;
+            var dw = Math.ceil(d * width / iw);
+            var dh = Math.ceil(d * height / ih / vertSquashRatio);
+            var sy = 0;
+            var dy = 0;
+            while (sy < ih) {
+                var sx = 0;
+                var dx = 0;
+                while (sx < iw) {
+                    tmpCtx.clearRect(0, 0, d, d);
+                    tmpCtx.drawImage(img, -sx, -sy);
+                    ctx.drawImage(tmpCanvas, 0, 0, d, d, dx, dy, dw, dh);
+                    sx += d;
+                    dx += dw;
+                }
+                sy += d;
+                dy += dh;
+            }
+            ctx.restore();
+            tmpCanvas = tmpCtx = null;
+        }
+
+        /**
+         * Transform canvas coordination according to specified frame size and orientation
+         * Orientation value is from EXIF tag
+         */
+        function transformCoordinate(canvas, ctx, width, height, orientation) {
+            switch (orientation) {
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                    canvas.width = height;
+                    canvas.height = width;
+                    break;
+                default:
+                    canvas.width = width;
+                    canvas.height = height;
+            }
+            switch (orientation) {
+                case 2:
+                    // horizontal flip
+                    ctx.translate(width, 0);
+                    ctx.scale(-1, 1);
+                    break;
+                case 3:
+                    // 180 rotate left
+                    ctx.translate(width, height);
+                    ctx.rotate(Math.PI);
+                    break;
+                case 4:
+                    // vertical flip
+                    ctx.translate(0, height);
+                    ctx.scale(1, -1);
+                    break;
+                case 5:
+                    // vertical flip + 90 rotate right
+                    ctx.rotate(0.5 * Math.PI);
+                    ctx.scale(1, -1);
+                    break;
+                case 6:
+                    // 90 rotate right
+                    ctx.rotate(0.5 * Math.PI);
+                    ctx.translate(0, -height);
+                    break;
+                case 7:
+                    // horizontal flip + 90 rotate right
+                    ctx.rotate(0.5 * Math.PI);
+                    ctx.translate(width, -height);
+                    ctx.scale(-1, 1);
+                    break;
+                case 8:
+                    // 90 rotate left
+                    ctx.rotate(-0.5 * Math.PI);
+                    ctx.translate(-width, 0);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        /**
+         * MegaPixImage class
+         */
+        function MegaPixImage(srcImage) {
+            if (window.Blob && srcImage instanceof Blob) {
+                var img = new Image();
+                var URL = window.URL && window.URL.createObjectURL ? window.URL :
+                    window.webkitURL && window.webkitURL.createObjectURL ? window.webkitURL :
+                        null;
+                if (!URL) {
+                    throw Error("No createObjectURL function found to create blob url");
+                }
+                img.src = URL.createObjectURL(srcImage);
+                this.blob = srcImage;
+                srcImage = img;
+            }
+            if (!srcImage.naturalWidth && !srcImage.naturalHeight) {
+                var _this = this;
+                srcImage.onload = function () {
+                    var listeners = _this.imageLoadListeners;
+                    if (listeners) {
+                        _this.imageLoadListeners = null;
+                        for (var i = 0, len = listeners.length; i < len; i++) {
+                            listeners[i]();
+                        }
+                    }
+                };
+                this.imageLoadListeners = [];
+            }
+            this.srcImage = srcImage;
+        }
+
+        /**
+         * Rendering megapix image into specified target element
+         */
+        MegaPixImage.prototype.render = function (target, options) {
+            if (this.imageLoadListeners) {
+                var _this = this;
+                this.imageLoadListeners.push(function () {
+                    _this.render(target, options)
+                });
+                return;
+            }
+            options = options || {};
+            var imgWidth = this.srcImage.naturalWidth, imgHeight = this.srcImage.naturalHeight,
+                width = options.width, height = options.height,
+                maxWidth = options.maxWidth, maxHeight = options.maxHeight,
+                doSquash = !this.blob || this.blob.type === 'image/jpeg';
+            if (width && !height) {
+                height = (imgHeight * width / imgWidth) << 0;
+            } else if (height && !width) {
+                width = (imgWidth * height / imgHeight) << 0;
+            } else {
+                width = imgWidth;
+                height = imgHeight;
+            }
+            if (maxWidth && width > maxWidth) {
+                width = maxWidth;
+                height = (imgHeight * width / imgWidth) << 0;
+            }
+            if (maxHeight && height > maxHeight) {
+                height = maxHeight;
+                width = (imgWidth * height / imgHeight) << 0;
+            }
+            var opt = {width: width, height: height};
+            for (var k in options) opt[k] = options[k];
+
+            var tagName = target.tagName.toLowerCase();
+            if (tagName === 'img') {
+                target.src = renderImageToDataURL(this.srcImage, opt, doSquash);
+            } else if (tagName === 'canvas') {
+                renderImageToCanvas(this.srcImage, target, opt, doSquash);
+            }
+            if (typeof this.onrender === 'function') {
+                this.onrender(target);
+            }
+        };
+
+        /**
+         * Export class to global
+         */
+        if (typeof define === 'function' && define.amd) {
+            define([], function () {
+                return MegaPixImage;
+            }); // for AMD loader
+        } else {
+            this.MegaPixImage = MegaPixImage;
+        }
+    })();
+    /* 如果你项目中多个页面用到图片上传的方法可将这部分提取出来  ↑ */
+</script>
