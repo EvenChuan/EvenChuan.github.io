@@ -1,0 +1,49 @@
+<h2 class="t_nav"><a>踩过的</a><a>Enter默认点击</a></h2>
+<h1 class="c_titile">禁止回车按键触发点击事件</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    <div class="ccPig5main">
+            &nbsp;&nbsp;用过BootStrap的老铁（好像暴露了一些什么东西）不知道在做登陆功能模块的时候会不会遇见这样个问题，在用户名和密码输入完成后，
+        按下回车按钮竟然直接触发了我放在这个登陆功能里面的提交按钮事件！<br>
+        &nbsp;&nbsp;然后我查了一下，应为BootStrap框架的原因，然后我又做了一个小小的测试：<br>
+        <p style="text-align: center">
+            html代码如下：<br>
+
+            <img src="images/pit5_html.png" alt="" style="margin: 1rem auto"><br>
+
+            script代码如下：<br>
+            <img src="images/pit5_js.png" style="margin: 1rem auto" alt=""><br>
+        </p>
+        &nbsp;&nbsp;当我focus第一个input时按回车会弹出1；<br>
+        &nbsp;&nbsp;当我focus第二个input时按回车会弹出2；<br>
+        &nbsp;&nbsp;当我focus第三个input时按回车会弹出3；<br><br><br>
+        <p style="text-align: center">
+            然后将三个按钮放入一个form中：js代码不变，html代码如下：<br>
+            <img src="images/pit5_allhtml.png" style="margin: 1rem auto" alt=""><br>
+        </p>
+        &nbsp;&nbsp;无论focus到那个input框，按回车都会弹出1；<br><br>
+        &nbsp;&nbsp;我又做了个测试：将form去掉，发现此事件情况不会发生，但是点击按钮如果执行了一次，然后我在按回车会触发次刚刚点击的按钮的事件。
+        <br><br><br>
+        <p style="color:indianred; font-weight: 600">
+            以上说明：<br>
+            1、BS会封装form中按钮的默认回车事件就是调用按钮的点击事件；<br>
+            2、同一个form中出现多个按钮会默认触发第一个按钮的点击事件；<br><br>
+            禁止方法：<br>
+            1、去掉form标签，这种做法管用但是不是根本上解决了问题；<br>
+            2、在button标签中添加一个type属性，值为button；（bootstrap给的方法，推荐）
+        </p>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+</div>
+<style>
+</style>
+<script>
+</script>
+
