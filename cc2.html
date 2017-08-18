@@ -1,0 +1,27 @@
+    <h2 class="t_nav"><a>js</a><a>构造函数</a></h2>
+    <h1 class="c_titile">构造函数</h1>
+    <p class="box">发布时间：2017-07-25<span>编辑：EvanChuan</span>阅读（20）</p>
+    <div class="hc_main" style="padding: 2rem; font-size: 1rem">
+        <br>
+        <br>
+        <br>
+        &nbsp;&nbsp;随着工作的进展，和自身能力的提升，发现前端重点js不是只有数据交互、注入、写动效那么浅显，也是时候了解一些它内在的精髓与美了！<br><br>
+        &nbsp;&nbsp;<b>工厂函数：</b><br>当你想要创建一个对象时可以使用 var obj={} 或 let obj={} 成功创建，但是当你需要创建多个拥有相似属性的对象时，你还会每次都去var？
+        这个时候就需要工厂函数，批量生产我们需要的对象，
+        <p style="margin:1rem auto 1rem 2rem">
+            function cractF(name, age) { <br>
+            var a = new Object();<br>
+            a.name = name;<br>
+            a.age = age;<br>
+            a.myalert = function() {<br>
+            alert(this.name + ":"+this.age);<br>
+            }<br>
+            return a;<br>
+            }<br>
+            var test1 = cractF("江","20");<br>
+            var test2 = cractF("川","21");<br>
+            对象确实生产出来了，但是问题又来了，这些对象都是Object生产出来的，可是具体类型是什么呢？于是构造函数出现了；http://www.jb51.net/article/55539.html
+            http://blog.csdn.net/flyingpig2016/article/details/52939679
+        </p>
+
+    </div>

@@ -1,0 +1,174 @@
+<style>
+    a.load:hover{color:blue}
+</style>
+
+<h2 class="t_nav"><a>Project</a><a>canvas绘制加上传</a></h2>
+<h1 class="c_titile">图片的canvas绘制 + 上传 插件</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    <p>
+        &nbsp;&nbsp;做项目中用到的图片上传框架，当时我找了个最简单的单图上传的框架，根据我们项目的需求，我将这个框架调整大概精简了一般多的代码，并修改成可以多图上传的框架，有项目用到此需求的框架尽管点击下方下载按钮进行下载，我以最简明的方式为你呈现，html+css+js共300多行代码！下面看演示案例：
+    </p>
+
+    <a class="load" href="compress/pictureupload.rar" download="">下载</a>
+</div>
+<script>
+    $(function(){
+        /*分页构造器
+         参数模板：***为必填参数
+         {
+         isLocalData:true,
+         getData:function(pageNum){return new Array();}
+         btnCollapseNum: 8,
+         centerShowBtnNum: 4,
+         MaxNum: 20,
+         prevText: 'Previous',
+         nextText: 'Next',
+         prevId: "pre",
+         nextId: "next",
+         boxId: 'tt_pagination',                          ***
+         fun: function(data){console.log(data);}          ***
+         }
+         btnCollapseNum必须比centerShowBtnNum大4以上
+         关于插件样式请自行定义 */
+        function CreateComPage(obj) {
+            this.timer = null;
+            /* 是否为本地数据，只接受布尔值 */
+            this.isLocalData = obj.isLocalData || true;
+            /*获取数据，传入参数为跳转到的页码数，如接受网络数据必填,返回数据为数组类型，也可直接自行启动页面刷新控制方法*/
+            this.getDataOnline = obj.getData || false;
+            /*不显示...的页数最大值限制*/
+            this.btnCollapseNum = obj.btnCollapseNum || 8;
+            /*中心显示页码数量，不包含...*/
+            this.centerShowNum = obj.centerShowBtnNum || 4;
+            /*单页最大数据数量*/
+            this.MaxNum = obj.MaxNum || 20;
+            /*前一页后一页文本内容*/
+            this.prevText = obj.prevText || 'Previous';
+            this.nextText = obj.nextText || 'Next';
+            /*前一页后一页元素ID，不需要#*/
+            this.prevId = obj.prevId || "pre";
+            this.nextId = obj.nextId || "next";
+            /*!!!***必填***!!!数据刷新回调方法*/
+            this.getH5 = obj.fun || false;
+            /*!!!***必填***!!!分页插件容器id，不需要加#*/
+            this.box = obj.boxId || false;
+            console.log(this);
+        }
+        CreateComPage.prototype.Page = function (data) {
+            /*数据验证判断*/
+            if (!this.box)return alert('CreateComPage所需参数boxId为必填参数不可为空');
+            if (this.btnCollapseNum <= this.centerShowNum)return alert('btnCollapseNum 必须大于 centerShowBtnNum');
+            if (!/^[1-9]\d{0,}$/.test(this.MaxNum))return alert('MaxNum必须为正整数');
+            var comPage = this, HTML = '',
+                key = Math.ceil(data.length / this.MaxNum),
+                box = $("#" + comPage.box);
+            /*如果不到一页不显示分页部分,直接加载数据到页面*/
+            if (key === 1) return comPage.upDateView(data);
+            for (var j = 1; j <= key; j++) {
+                HTML += '<li>' + j + '</li>';
+            }
+            box.html('<ul id="pb_comPage"><li id="' + comPage.prevId + '">' + this.prevText + '</li>' + HTML + '<li id="' + comPage.nextId + '">' + comPage.nextText + '</li></ul>');
+            comPage.BindClick(data, box);
+        };
+        CreateComPage.prototype.BindClick = function (data, ul) {
+            var comPage = this, lis = ul.find('li');
+            lis.unbind("click").click(function () {
+                /*点击自身和点击不可点击按钮无效*/
+                if (/sel|NoClick/.test(this.className)) return;
+                var pre = $("#" + comPage.prevId), next = $("#" + comPage.nextId),
+                    num = this.innerText, btnLength = lis.length,
+                    liSel = ul.find(".sel");
+                if (num === comPage.prevText) {
+                    liSel.prev().text() !== comPage.nextText && liSel.prev().click();
+                } else if (num === comPage.nextText) {
+                    liSel.next().text() !== comPage.nextText && liSel.next().click();
+                }
+                if (/^\d+$/.test(num)) {
+                    $(this).addClass("sel").siblings(".sel").removeClass("sel");
+                    /*判断上一页，下一页状态*/
+                    pre[0].className = ul.find(".sel").prev().text() === comPage.prevText ? "NoClick" : "";
+                    next[0].className = ul.find(".sel").next().text() === comPage.nextText ? "NoClick" : "";
+                    /* 对上一页，下一页做出延时执行,懒加载 */
+                    clearTimeout(comPage.timer);
+                    comPage.timer = setTimeout(function () {
+                        if (comPage.isLocalData) {
+                            comPage.upDateView(data, num);
+                        } else {
+                            /*加载网络数据,可设置返回值起吊getH5方法更新页面*/
+                            if (!comPage.getDataOnline)return alert('获取网络数据模式下getData方法为必须项目');
+                            comPage.upDateView(comPage.getDataOnline(num - 0), num);
+                        }
+                    }, 400);
+                    /*隐藏&显示其他按钮，创建...,中间最多保持四个*/
+                    if ($(this).next().css("display") === "none") {
+                        $(this).next().show();
+                        getSibling(pre[0], 'next', 2).text('...');
+                        getSibling(this, 'prev', comPage.centerShowNum - 1).hide();
+                    }
+                    if ($(this).prev().css("display") === "none") {
+                        $(this).prev().show();
+                        getSibling(next[0], 'prev', 2).text('...');
+                        getSibling(this, 'next', comPage.centerShowNum - 1).hide();
+                    }
+                    /*...还原*/
+                    if ($(this).next().text() === "...") $(this).next().text(this.innerText - (-1));
+                    if ($(this).prev().text() === "...") $(this).prev().text(this.innerText - 1);
+                    /*超过指定个页面下的特殊状态,不包含左右两个增减按钮*/
+                    if (btnLength >= comPage.btnCollapseNum + 2) {
+                        if ($(this).next().text() === comPage.nextText) {
+                            blockOrNone(2, btnLength - comPage.centerShowNum - 3);
+                            lis.eq(2).text("...");
+                        } else if ($(this).prev().text() === comPage.prevText) {
+                            blockOrNone(comPage.centerShowNum + 2, btnLength - 3);
+                            lis.eq(-3).text("...");
+                        }
+                    }
+                }
+            }).get(1).click();
+            /*隐藏li*/
+            function getSibling(self, mode, n) {
+                if (!n) return $(self);
+                if (mode === 'next') {
+                    return getSibling(self.nextSibling, mode, --n);
+                } else {
+                    return getSibling(self.previousSibling, mode, --n);
+                }
+            }
+
+            /*控制所在区间内元素显示隐藏*/
+            function blockOrNone(min, max) {
+                return lis.show().filter(':lt(' + max + '):gt(' + min + ')').hide();
+            }
+        };
+        CreateComPage.prototype.upDateView = function (data, num) {
+            /*利用作用域结局num的改变问题*/
+            if (!data)return;
+            if (!data.length)return alert('getData方法所return的数据必须为数组数据');
+            num = num || 1;
+            var start = this.MaxNum * (num - 1),
+                end = Math.min(num * this.MaxNum, data.length);
+            clearTimeout(this.timer);
+            this.timer = null;
+            /*调用页面方法的upView方法*/
+            this.getH5 ? this.getH5(data.slice(start, end)) : console.log('分页回调函数未设置，如在本地数据状态下回调函数为必填项');
+        };
+
+
+        /*  调用位置  ↓   */
+        var pageLoad =CreateComPage({
+            boxId: 'tt_pagination',
+            btnCollapseNum: 6,
+            centerShowBtnNum: 4,
+            MaxNum: 10,
+            prevText: 'Previous',
+            nextText: 'Next',
+            prevId: "pre",
+            nextId: "next",
+            fun: UpData
+        });
+        function UpData(data){
+            console.log("数据注入")
+        };
+    })
+</script>
