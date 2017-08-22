@@ -1,0 +1,37 @@
+<h2 class="t_nav"><a>踩过的</a><a>时间戳转yyyy-mm-dd</a></h2>
+<h1 class="c_titile">js将时间戳转yyyy-mm-dd</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    <div class="ccPig6main">
+           &nbsp;&nbsp;js中不存在现成的api能将时间戳直接转换成 yyyy-mm-dd  这种格式；这就意味着需要自己写代码将其切割拼串；
+        <p style="background-color: #ddd;padding: 1rem 2rem">
+            function getSelfDate(timeStamp) { <br>
+            &nbsp;&nbsp;var date = new Date();<br>
+            &nbsp;&nbsp;date.setTime(timeStamp * 1000);<br>
+            &nbsp;&nbsp;var y = date.getFullYear();<br>
+            &nbsp;&nbsp;var m = date.getMonth() + 1;<br>
+            &nbsp;&nbsp;m = m < 10 ? ('0' + m) : m;<br>
+            &nbsp;&nbsp;var d = date.getDate();<br>
+            &nbsp;&nbsp;d = d < 10 ? ('0' + d) : d;<br>
+            &nbsp;&nbsp;var h = date.getHours();<br>
+            &nbsp;&nbsp;h = h < 10 ? ('0' + h) : h;<br>
+            &nbsp;&nbsp;var minute = date.getMinutes();<br>
+            &nbsp;&nbsp;var second = date.getSeconds();<br>
+            &nbsp;&nbsp;minute = minute < 10 ? ('0' + minute) : minute;<br>
+            &nbsp;&nbsp;second = second < 10 ? ('0' + second) : second;<br>
+            &nbsp;&nbsp;return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;<br>
+            };<br>
+            console.log(getSelfDate(1495157126));<br>
+        </p>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+</div>
+<style>
+</style>
+<script>
+</script>
+

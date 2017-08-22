@@ -1,0 +1,31 @@
+<h2 class="t_nav"><a>踩过的</a><a>html中onclick事件</a></h2>
+<h1 class="c_titile">html标签中的onclick函数undefind问题</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    <div class="ccPig6main">
+            <p style="text-align: center">
+                <img src="images/pit6.1.png" alt=""><br>
+                报错 abc is undefind
+            </p>
+            <p style="text-align: center">
+                <br><br><br>
+                <img src="images/pit6.2.png" alt=""><br>
+                成功；
+            </p>
+        <br>
+        <br>
+        <p style="background-color: azure;color:goldenrod">
+            &nbsp;&nbsp;说明：在$(document).ready(function(){})中不能调用，但是将方法写在外面即可调用。原因很简单。因为当你把abc写在那个作为ready的参数的匿名函数里的时候，abc这个变量的作用域也仅限于那个匿名函数里。那个匿名函数之外自然无法使用 abc 这个变量。
+        </p>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+</div>
+<style>
+</style>
+<script>
+</script>
+
