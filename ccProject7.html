@@ -1,0 +1,58 @@
+<style>
+    a.load:hover {
+        color: blue
+    }
+</style>
+
+<h2 class="t_nav"><a>Project</a><a>canvas绘制加上传</a></h2>
+<h1 class="c_titile">图片的canvas绘制 + 上传 插件</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    <p>
+        &nbsp;&nbsp;看看我右侧分享里的列表是不是感觉没那么美观，那么请 <br>
+        &nbsp;&nbsp;试试效果 &nbsp;<button id="project7Btn">点击这里</button><br>
+        &nbsp;&nbsp;列表栏恢复 <button id="project7Btn1">点击这里</button> <br><br><br>
+
+        &nbsp;&nbsp;代码：<br>
+    <p style="background-color: silver">
+    &nbsp;&nbsp;function getZero(n) { <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;if (isNaN(n) || n - 0 <= 0 || n - 0 > 999)return "提交的编码必须为1-999数字";<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;if (n - 0 < 10) {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;return '00' + (n - 0);<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;} else if (n - 0 < 100) {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;return '0' + (n - 0);<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+    &nbsp;&nbsp;return "" + (n - 0);<br>
+    &nbsp;&nbsp;}<br>
+    </p>
+    <br>
+    &nbsp;&nbsp;使用时只需调用getZero(),将你的数字传进去即可！
+    </p>
+
+</div>
+<script>
+    function getZero(n) {
+        if (isNaN(n) || n - 0 <= 0 || n - 0 > 999)return "提交的编码必须为1-999数字";
+        if (n - 0 < 10) {
+            return '00' + (n - 0);
+        } else if (n - 0 < 100) {
+            return '0' + (n - 0);
+        }
+        return "" + (n - 0);
+    }
+    $("#project7Btn").click(function () {
+        var sp = $("ol li span");
+        $.each(sp, function (i, v) {
+            $(v).html(getZero($(v).text()));
+        });
+    });
+    $("#project7Btn1").click(function () {
+        var sp = $("ol li span");
+        $.each(sp, function (i, v) {
+            $(v).html(i+1);
+        });
+    });
+
+
+</script>
+

@@ -1,0 +1,73 @@
+<style>
+    a.load:hover {
+        color: blue
+    }
+    #spinner{
+        position: fixed;
+        top: 20px;
+        left: 40%;
+        display: none;
+        color: red;
+        font-weight: 900;
+        background-color: rgba(80, 80, 90, 0.22);
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 100px;
+        padding-right: 100px;
+        border-radius: 15px;
+    }
+</style>
+
+<h2 class="t_nav"><a>Project</a><a>无线加载</a></h2>
+<h1 class="c_titile">无线加载代码</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    &nbsp;&nbsp;无线加载，原理很简单，就是判断滚动条距离底端的位置，这里以20px做例子，尝试将滚动条下移到底端； <br><br><br>
+    <div id="sample">
+    </div>
+    <div id="spinner">
+        正在加载
+    </div>
+    <br><br>
+    <a class="load" href="compress/Untitled1.rar" download="">点击下载</a>
+    <script type="text/javascript">
+        var index = 0;
+        function lowEnough(){
+            var pageHeight = Math.max(document.body.scrollHeight,document.body.offsetHeight);
+            var viewportHeight = window.innerHeight ||
+                document.documentElement.clientHeight ||
+                document.body.clientHeight || 0;
+            var scrollHeight = window.pageYOffset ||
+                document.documentElement.scrollTop ||
+                document.body.scrollTop || 0;
+            // console.log(pageHeight);
+            // console.log(viewportHeight);
+            // console.log(scrollHeight);
+            return pageHeight - viewportHeight - scrollHeight < 20;
+        }
+
+        function doSomething(){
+            var htmlStr = "";
+            for(var i=0;i<10;i++){
+                htmlStr += "这是第"+index+"次加载<br>";
+            }
+            $('#sample').append(htmlStr);
+            index++;
+            pollScroll();//继续循环
+            $('#spinner').hide();
+        }
+
+        function checkScroll(){
+            if(!lowEnough()) return pollScroll();
+
+            $('#spinner').show();
+            setTimeout(doSomething,900);
+
+        }
+        function pollScroll(){
+            setTimeout(checkScroll,1000);
+        }
+        checkScroll();
+    </script>
+    <br><br>
+</div>
