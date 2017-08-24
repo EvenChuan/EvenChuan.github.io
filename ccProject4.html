@@ -1,0 +1,41 @@
+<style>
+    a.load:hover {
+        color: blue
+    }
+</style>
+
+<h2 class="t_nav"><a>Project</a><a>ajax进一步封装</a></h2>
+<h1 class="c_titile">ajax的进一步精简</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+    &nbsp;&nbsp;简单、粗暴、无脑，但是用起来很方便！<br>
+    &nbsp;&nbsp;代码：<br>
+    <p style="background-color: silver">
+        &nbsp;&nbsp;function ajax(type, url, str, callback1, callback2) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;$.ajax({<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: type,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: url,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: str || "",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataType: "json",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;async: true,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache: false,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;success: function (data) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback1 && callback1(data);<br>
+        &nbsp;&nbsp;},<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;error: function (/*XMLHttpRequest, textStatus, errorThrown*/) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*失败后的返回函数*/<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback2 && callback2();<br>
+        &nbsp;&nbsp;},<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;complete: function () {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;/*请求成功请求失败都需要调用的函数，如果有就写在这个位置，没有就不添加*/<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+        &nbsp;&nbsp; });<br>
+        &nbsp;}<br>
+        &nbsp;&nbsp;
+    </p>
+    <p>
+        <br><br>
+        调用方法：ajax（“post”，“url”，data，fun1，fun2）//即可
+    </p>
+    <br><br>
+</div>

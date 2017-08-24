@@ -1,0 +1,150 @@
+<style>
+    a.load:hover {
+        color: blue
+    }
+
+    div.webAlert {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(62, 57, 58, 0.6);
+        z-index: 1000000;
+    }
+
+    .webAlert div.main {
+        width: 420px;
+        height: 230px;
+        background: #fff;
+        margin: 220px auto;
+        box-sizing: border-box;
+        padding-top: 60px;
+        text-align: center;
+    }
+
+    .webAlert div.main p.content {
+        font-size: 18px;
+        margin-bottom: 70px;
+    }
+
+    .webAlert div.main .confirm {
+        width: 90px;
+        height: 45px;
+        background-color: #1A8A8A;
+        margin: 0 2rem;
+    }
+
+    .webAlert div.main .cancel {
+        width: 90px;
+        height: 45px;
+        background-color: rosybrown;
+        margin: 0 2rem;
+
+    }
+
+</style>
+
+<h2 class="t_nav"><a>Project</a><a>公共提示框</a></h2>
+<h1 class="c_titile">公共提示框</h1>
+<p class="box">发布时间：2017-05-25<span>编辑：EvanChuan</span>阅读（20）</p>
+<div class="hc_main" style="padding: 2rem; font-size: 1rem">
+        &nbsp;&nbsp;含盖遮罩层的提示框，点击按钮测试：
+    <button id="btn">
+        点击我弹出提示框！
+    </button>
+    <br>
+    <br>
+    &nbsp;&nbsp;webAlert(2,"你确定？",function(data){<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;console.log(data)<br>
+    &nbsp;&nbsp;})<br><br><br>
+    说明：<br>
+    调用方式 webAlert（）；<br>
+    参数：<br>
+    ① 公共提示框出现几个按钮，只带“确定”按钮传1带“确定”和“取消”传2；<br>
+    ② 字符串格式的提示文字；<br>
+    ③ 点击确定或取消按钮后的返回data，点击确定返回 true  否则为 false ；<br>
+    <br><br>
+    封装的此方法用了dataset.i 方法，又因为这个方法对IE低版本兼容性问题，所以又写了一个兼容dataset.i的函数代码和IE检测的代码；
+    <br><br>
+    <a class="load" href="compress/Webalert.rar" download="">点击下载</a>
+</div>
+<script>
+    var _IE = !!/*@cc_on!@*/0 ? navigator.appVersion.match(/MSIE \d+\.\d+/)[0].slice(5) - 0 : false;
+    /*对元素生成dataset属性*/
+    /*防止死循环*/
+    var datasetTimer = {};
+    function CreateDataset(ele) {
+        /*非IE及IE11+不运行此方法*/
+        if (!_IE || _IE > 10)return;
+        /*甄别jQuery对象和DOM*/
+        if (ele instanceof $) {
+            $.each(ele, function (k, v) {
+                CreateDataset(v);
+            });
+            return;
+        }
+        /*已有dataset属性则不再设立监听事件,提高性能*/
+        if (ele.dataset)return;
+        ele.dataset = {};
+        /*属性拆解*/
+        var dataArr = ele.outerHTML ? ele.outerHTML.split("<")[1].match(/data-[\w]+=['"][\!\w]+["']/gi) : false;
+        if (!dataArr)return;
+        for (var i = 0; i < dataArr.length; i++) {
+            var key = dataArr[i].split("=")[0].slice(5);
+            /*自调行程闭包，保存key*/
+            (function (key) {
+                Object.defineProperty(ele.attributes, 'data-' + key, {
+                    set: function (newValue) {
+                        /*防泄漏*/
+                        datasetTimer[key + 'XX' + newValue] =
+                            datasetTimer[key + 'XX' + newValue] ||
+                            setTimeout(function () {
+                                ele.dataset[key] = newValue;
+                                delete datasetTimer[key + 'XX' + newValue];
+                            }, 2);
+                    },
+                    get: function () {
+                        /*规定相同的取值方式*/
+                        return $(ele).attr('data-' + key);
+                    }
+                });
+                Object.defineProperty(ele.dataset, key, {
+                    set: function (newvalue) {
+                        $(ele).attr('data-' + key, newvalue);
+                    },
+                    get: function () {
+                        /*规定相同的取值方式*/
+                        // console.log('读取' + key + '值为' + $(ele).attr('data-' + key));
+                        return $(ele).attr('data-' + key);
+                    }
+                });
+                // console.log(ele.tagName + '-->' + key + '-->' + dataArr[i].split('=')[1].slice(1, -1));//测试语句
+            })(key);
+            ele.dataset[key] = dataArr[i].split('=')[1].slice(1, -1);
+        }
+    }
+    //通用提示框
+    function webAlert() {
+        for (var i = 0, content, num, fun; i < arguments.length; i++) {
+            typeof arguments[i] === 'function' && (fun = arguments[i]);
+            typeof arguments[i] === 'string' && (content = arguments[i]);
+            typeof arguments[i] === 'number' && (num = arguments[i]);
+        }
+        var html = Number(num) === 1 ? '' : '<button class="cancel" data-i="false">取消</button>';
+        $(document.body).prepend('<div class="webAlert"><div class="main"><p class="content">' + content + '</p>' + html + '<button class="confirm" data-i="true">确定</button></div></div>');
+        CreateDataset($('.webAlert').find('button'));
+        $("button", ".webAlert").click(function () {
+            fun && fun(this.dataset.i);
+            $(".webAlert").fadeOut(function () {
+                $(this).remove();
+            });
+        })
+    }
+    $("#btn").click(function(){
+        webAlert(2,"你确定？",function(data){
+            console.log(data)
+        })
+    });
+
+</script>

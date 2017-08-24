@@ -135,10 +135,10 @@
   })
 
 })(jQuery)
-
+//
 var config = {
   current: 0,
   speed: 500,
-  intervalTime: 60000
+  intervalTime: 5000
 }
 $('.slider').xSlider(config)
