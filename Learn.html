@@ -25,6 +25,77 @@
             <h1 class="c_titile">Learn</h1>
             <p class="box">发布时间：2017-07-25<span>编辑：EvanChuan</span>阅读（30）</p>
             <div class="hc_main" style="padding: 2rem; font-size: 1rem">
+                &nbsp;随着工作的进展，和自身能力的提升，发现前端重点js不是只有数据交互、注入、写动效那么浅显，也是时候了解一些它内在的精髓与美了！<br><br>
+                &nbsp;&nbsp;<b>工厂函数：</b><br>当你想要创建一个对象时可以使用 var obj={} 或 let obj={} 成功创建，但是当你需要创建多个拥有相似属性的对象时，你还会每次都去var？
+                这个时候就需要工厂函数，批量生产我们需要的对象，
+                <p style="margin:1rem auto 1rem 2rem ;color:#333;font-weight: bold;background-color: #89919a">
+                    &nbsp;function cractF(name, age) { <br>
+                    &nbsp; &nbsp;var a = new Object();<br>
+                    &nbsp; &nbsp; &nbsp;a.name = name;<br>
+                    &nbsp; &nbsp; &nbsp;a.age = age;<br>
+                    &nbsp; &nbsp; &nbsp;a.myalert = function() {<br>
+                    &nbsp; &nbsp; &nbsp;alert(this.name + ":"+this.age);<br>
+                    &nbsp;}<br>
+                    &nbsp; &nbsp;return a;<br>
+                    &nbsp;}<br>
+                    var test1 = cractF("江","20");<br>
+                    var test2 = cractF("川","21");<br>
+                </p>对象确实生产出来了，但是问题又来了，这些对象都是Object生产出来的，可是具体类型是什么呢？于是构造函数出现了；<br>
+
+                &nbsp;&nbsp;<b>构造函数：</b><br>
+                &nbsp;&nbsp;① 默认函数名首字母大写（与正常的函数做区分）；<br>
+                &nbsp;&nbsp;② 构造函数并没有显示返回任何东西。new 关键字会自动执行四步（略）；<br>
+                &nbsp;&nbsp;③ 构造函数也是函数所以当然也可以直接被调用，但是返回值为 undefind ，此时this只全局的this或Window，严格模式下会出错；<br>
+                &nbsp;&nbsp;④ 初始化 Object.defineProperty() <br>
+                <p style="color:#333;font-weight: bold;background-color: #89919a">
+                    &nbsp;&nbsp;&nbsp;function Person( name){ <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Object.defineProperty(this, "name"{ <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get :function(){ <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return name; <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}, <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set:function (newName){ <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name =newName; <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;}, <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enumerable :true, //可枚举，默认为false <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;configurable:true //可配置 <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}); <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;var p1=new Person('John'); <br>
+                    &nbsp;&nbsp;
+                </p>
+                &nbsp;&nbsp;⑤ 使用原型对象 <br>
+                <p style="color:#333;font-weight: bold ;background-color: #89919a">
+                    &nbsp;&nbsp;//比直接在构造函数中写的效率要高的多 <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Person.prototype.sayName= function(){<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(this.name);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;};<br>
+                </p>
+                &nbsp;&nbsp;如果需要添加的方法比较多的情况则可以直接调用prototype,替换原型 <br>
+                <p style="color:#333;font-weight: bold;background-color: #89919a">
+                    &nbsp;&nbsp;Person.prototype ={<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;sayName :function(){<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(this.name);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;toString :function(){<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return "[Person "+ this.name+"]" ;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;};<br>
+                </p>
+                &nbsp;&nbsp;这种方式防止了多次的 Person.prototype，但是会改变constructor指向为Object，为了避免需要设置一下这个属性
+                <p style="color:#333;font-weight: bold;background-color: #89919a">
+                    &nbsp;&nbsp;Person.prototype ={ <br>
+                    &nbsp;&nbsp; &nbsp;&nbsp;constructor :Person,<br>
+                    &nbsp;&nbsp; &nbsp;&nbsp;sayName :function(){<br>
+                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;console.log(this.name);<br>
+                    &nbsp;&nbsp; &nbsp;&nbsp;},<br>
+                    &nbsp;&nbsp; &nbsp;&nbsp;toString :function(){<br>
+                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;return "[Person "+ this.name+"]" ;<br>
+                    &nbsp;&nbsp; &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;};<br>
+                </p>
+                总结：开发中除了批量生产相似对象在封装小插件也一定会遇到构造函数方式，当然如果不用构造函数通过普通函数传参调用也可以，
+                但是性能会低一些，并且如果组件之间只有部分公共方法，开发是必然需要调用的同时复写一部分，那么普通函数就麻烦多了，
+                使用构造函数可以直接在prototype中添加方法，也可复写方法；
 
 
             </div>
